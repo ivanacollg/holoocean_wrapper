@@ -1,3 +1,5 @@
+#!/usr/bin/env python3 
+
 import cv2
 import rospy
 import holoocean
@@ -38,7 +40,7 @@ listener = keyboard.Listener(
     on_release=on_release)
 listener.start()
 
-scene = "test" # OpenWater-HoveringImagingSonar"
+scene = "PierHarbor-HoveringDualSonar"
 config = holoocean.packagemanager.get_scenario(scene)
 depth_command = 0
 ticks_per_second = 200
@@ -95,7 +97,7 @@ with holoocean.make(scene) as env:
             imu_pub.publish(imu_msg)
 
             # conver the post sensor to a depth message
-            depth_command = depth_control.control_depth(state["PoseSensor"][2][3],-1)
+            #depth_command = depth_control.control_depth(state["PoseSensor"][2][3],-1)
             depth_msg = Depth()
             depth_msg.depth = state["PoseSensor"][2][3]
             depth_pub.publish(depth_msg)

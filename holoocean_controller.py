@@ -33,11 +33,12 @@ listener = keyboard.Listener(
 listener.start()
 
 
-scene = "test" # OpenWater-HoveringImagingSonar"
+scene = "PierHarbor-HoveringDualSonar"
 config = holoocean.packagemanager.get_scenario(scene)
 depth_command = 0
 
 plt.ion()
+fig,ax = plt.subplots(nrows=1, ncols =3, figsize = (15,5))
 step = 0
 xs = []
 ys = []
@@ -64,37 +65,55 @@ with holoocean.make(scene) as env:
             pass
             
 
-        if "PoseSensor" in state:
-            depth_command = depth_control.control_depth(state["PoseSensor"][2][3],-1)
+        #if "PoseSensor" in state:
+        #    depth_command = depth_control.control_depth(state["PoseSensor"][2][3],-1)
             
         if "HorizontalSonar" in state:
 
             map_x, map_y = generate_map(config)
             img = np.array(state["HorizontalSonar"] * 255).astype(np.uint8)
             horizontal_sonar_img = cv2.remap(img, map_x, map_y, cv2.INTER_LINEAR)
+            
             detector = CFAR(40, 20, 0.1, None)
             threshold = 85
             peaks = detector.detect(img, "SOCA")
             peaks &= img > threshold
             peaks_r = cv2.remap(peaks, map_x, map_y, cv2.INTER_LINEAR)
             locs = np.c_[np.nonzero(peaks_r)]
-
-
             for loc in locs:
                 cv2.circle(horizontal_sonar_img, (loc[1],loc[0]),5, (255), -1)
 
-
-            #img = np.array(state["VerticalSonar"] * 255).astype(np.uint8)
-            #vertical_sonar_img = cv2.remap(img, map_x, map_y, cv2.INTER_LINEAR)
-
-            #cv2.imshow('Frame',horizontal_sonar_img)
-            #cv2.imshow('Frame_2',vertical_sonar_img)
-
-            #cv2.imwrite("test.png",img)
- 
-            # Press Q on keyboard to  exit
-            if cv2.waitKey(25) & 0xFF == ord('q'):
-                break
+            ax[0].imshow(horizontal_sonar_img)
+            fig.canvas.draw()
 
 
+        if "VerticalSonar" in state:
+
+            map_x, map_y = generate_map(config)
+            img = np.array(state["VerticalSonar"] * 255).astype(np.uint8)
+            vertical_sonar_img = cv2.remap(img, map_x, map_y, cv2.INTER_LINEAR)
+
+            detector = CFAR(40, 20, 0.1, None)
+            threshold = 85
+            peaks = detector.detect(img, "SOCA")
+            peaks &= img > threshold
+            peaks_r = cv2.remap(peaks, map_x, map_y, cv2.INTER_LINEAR)
+            locs = np.c_[np.nonzero(peaks_r)]
+            for loc in locs:
+                cv2.circle(vertical_sonar_img, (loc[1],loc[0]),5, (255), -1)
+
+            ax[1].imshow(vertical_sonar_img)
+            fig.canvas.draw()
+
+
+        if "LeftCamera" in state:
+            pixels = state["LeftCamera"]
+            ax[2].imshow(pixels)
+            fig.canvas.draw()
+        
+        fig.canvas.flush_events()
+
+
+
+plt.ioff()
 
