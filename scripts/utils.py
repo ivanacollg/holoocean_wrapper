@@ -61,6 +61,7 @@ def parse_keys(keys: list, val : int, depth_command : float) -> np.array:
 
     command = np.zeros(8) # the commands start out as all zeros
     command[0:4] = depth_command # set the depth command
+    capture = False
 
     if 'i' in keys: # up
         command[0:4] += val
@@ -82,8 +83,10 @@ def parse_keys(keys: list, val : int, depth_command : float) -> np.array:
     if 'd' in keys: #strafe right
         command[[4,6]] -= val
         command[[5,7]] += val
+    if 'z' in keys: # save images
+        capture = True
 
-    return command
+    return command, capture
 
 def log_path(path : list) -> None:
     """Log a generated path from a manual control run
