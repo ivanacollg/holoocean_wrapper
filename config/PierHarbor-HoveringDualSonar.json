@@ -1,0 +1,126 @@
+{
+    "name": "HoveringDualSonar",
+    "world": "PierHarbor",
+    "main_agent": "auv0",
+    "ticks_per_sec": 200,
+    "frames_per_sec": true,
+    "octree_min": 0.1,
+    "octree_max": 5.0,
+    "agents":[
+        {
+            "agent_name": "auv0",
+            "agent_type": "HoveringAUV",
+            "sensors": [
+                {
+                    "sensor_type": "PoseSensor",
+                    "socket": "IMUSocket"
+                },
+                {
+                    "sensor_type": "VelocitySensor",
+                    "socket": "IMUSocket"
+                },
+                {
+                    "sensor_type": "IMUSensor",
+                    "socket": "IMUSocket",
+                    "Hz": 100,
+                    "configuration": {
+                        "AccelSigma": 0.00277,
+                        "AngVelSigma": 0.00123,
+                        "AccelBiasSigma": 0.00141,
+                        "AngVelBiasSigma": 0.00388,
+                        "ReturnBias": true
+                    }
+                },
+                {
+                    "sensor_type": "GPSSensor",
+                    "socket": "IMUSocket",
+                    "Hz": 5,
+                    "configuration":{
+                        "Sigma": 0.5,
+                        "Depth": 1,
+                        "DepthSigma": 0.25
+                    }
+                },
+                {
+                    "sensor_type": "DVLSensor",
+                    "socket": "DVLSocket",
+                    "Hz": 20,
+                    "configuration": {
+                        "Elevation": 22.5,
+                        "VelSigma": 0.02626,
+                        "ReturnRange": true,
+                        "MaxRange": 50,
+                        "RangeSigma": 0.1
+                    }
+                },
+                {
+                    "sensor_type": "DepthSensor",
+                    "socket": "DepthSocket",
+                    "Hz": 100,
+                    "configuration": {
+                        "Sigma": 0.255
+                    }
+                },
+                {
+                    "sensor_type": "RGBCamera",
+                    "sensor_name": "LeftCamera",
+                    "socket": "CameraLeftSocket",
+                    "Hz": 5,
+                    "configuration": {
+                        "CaptureWidth": 512,
+                        "CaptureHeight": 51
+                    }
+                },
+                {
+                    "sensor_type": "ImagingSonar",
+                    "sensor_name": "VerticalSonar",
+                    "Hz": 5,
+                    "configuration": {
+                        "RangeBins": 512,
+                        "AzimuthBins": 512,
+                        "RangeMin": 1,
+                        "RangeMax": 30,
+                        "InitOctreeRange": 50,
+                        "Elevation": 20,
+                        "Azimuth": 120,
+                        "AzimuthStreaks": -1,
+                        "ScaleNoise": true,
+                        "AddSigma": 0.08,
+                        "MultSigma": 0.2,
+                        "RangeSigma": 0.1,
+                        "MultiPath": true
+                    },
+                    "rotation": [90,0,0],
+                    "location": [0.00, 0.0, 0.00]
+                },
+                {
+                    "sensor_type": "ImagingSonar",
+                    "sensor_name": "HorizontalSonar",
+                    "Hz": 5,
+                    "configuration": {
+                        "RangeBins": 512,
+                        "AzimuthBins": 512,
+                        "RangeMin": 1,
+                        "RangeMax": 30,
+                        "InitOctreeRange": 50,
+                        "Elevation": 20,
+                        "Azimuth": 120,
+                        "AzimuthStreaks": -1,
+                        "ScaleNoise": true,
+                        "AddSigma": 0.08,
+                        "MultSigma": 0.2,
+                        "RangeSigma": 0.1,
+                        "MultiPath": true
+                    },
+                    "location": [0.00, 0.0, 0.00]
+                }
+            ],
+            "control_scheme": 0,
+            "location": [555.0, -669.0, -2.8],
+            "rotation": [0.0, 0.0, 0.0]
+        }
+    ],
+
+    "window_width":  1280,
+    "window_height": 720
+}
