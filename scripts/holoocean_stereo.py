@@ -39,18 +39,19 @@ listener.start()
 #scene = ""
 #scene = "Dam-HoveringDualSonar" # Works now (Has a spot where it dosent work)
 #scene = "OpenWater-HoveringDualSonar" # Sonar donsen't work
-scene = "PierHarbor-HoveringDualSonar" #Works now (Has a spot where it dosen't work)
+scene = "PierHarbor-HoveringImagingSonar" #Works now (Has a spot where it dosen't work)
 config = holoocean.packagemanager.get_scenario(scene)
 depth_command = 0
 
-plt.ion()
-fig,ax = plt.subplots(nrows=1, ncols =3, figsize = (15,5))
+#plt.ion()
+#fig,ax = plt.subplots(nrows=1, ncols =3, figsize = (15,5))
 step = 0
 xs = []
 ys = []
 
 with holoocean.make(scene) as env:
     #env.should_render_viewport(False)
+    env.set_render_quality(0)
     while True:
         if 'q' in pressed_keys:
             break
@@ -58,10 +59,12 @@ with holoocean.make(scene) as env:
 
         #send to holoocean
         env.act("auv0", command)
+        print("before tick")
         state = env.tick()
+        print("after")
         step += 1
 
-        if "HorizontalSonar" in state and "VerticalSonar" in state and "LeftCamera" in state:
+        if "HorizontalSonar" in state:# and "VerticalSonar" in state and "LeftCamera" in state:
             
             if capture:
                 print("step"+str(step))
@@ -80,8 +83,8 @@ with holoocean.make(scene) as env:
                 #for loc in locs:
                 #    cv2.circle(horizontal_sonar_img, (loc[1],loc[0]),5, (255), -1)
 
-                ax[0].imshow(horizontal_sonar_img)
-                fig.canvas.draw()
+                #ax[0].imshow(horizontal_sonar_img)
+                #fig.canvas.draw()
                 if capture:
                     cv2.imwrite("../images/"+str(step)+"horz.png", horizontal_sonar_img)
                 #print("Horizontal Sonar")
@@ -141,7 +144,7 @@ with holoocean.make(scene) as env:
             if capture:
                 print("step"+str(step))
                 
-            fig.canvas.flush_events()
+            #fig.canvas.flush_events()
 
-plt.ioff()
+#plt.ioff()
 

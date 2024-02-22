@@ -1,0 +1,9 @@
+<launch>
+    <node pkg="holoocean_wrapper" name="holoocean_stereo" type="holoocean_stereo_ros.py" output="screen">
+    </node>
+    <node pkg="stereo_sonar" name="stereo_sonar" type="stereo_sonar_holoocean_node.py" output="screen">
+        <rosparam command="load" file="$(find stereo_sonar)/config/match.yaml"/>
+    </node>
+    <!--node pkg="tf" name="map_to_world_tf_publisher" type="static_transform_publisher" args="-520 646 12 0 0 0 world map 100"/-->
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find holoocean_wrapper)/rviz/holoocean.rviz" />
+</launch>
