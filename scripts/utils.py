@@ -68,11 +68,11 @@ def parse_keys(keys: list, val : int, depth_command : float) -> np.array:
     if 'k' in keys: # down
         command[0:4] -= val
     if 'j' in keys: # rotate left
-        command[[4,7]] += val
-        command[[5,6]] -= val
+        command[[4,7]] += val/3
+        command[[5,6]] -= val/3
     if 'l' in keys: # rotate right 
-        command[[4,7]] -= val
-        command[[5,6]] += val
+        command[[4,7]] -= val/3
+        command[[5,6]] += val/3
     if 'w' in keys: # forward
         command[4:8] += val
     if 's' in keys: # backward

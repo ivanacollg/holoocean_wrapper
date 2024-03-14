@@ -23,7 +23,7 @@ print(holoocean.util.get_holoocean_path())
 
 depth_control = Control()
 pressed_keys = list()
-force = 15
+force = 55
 
 def on_press(key):
     global pressed_keys
@@ -43,8 +43,10 @@ listener.start()
 
 #scene = ""
 #scene = "Dam-HoveringDualSonar" # Works now (Has a spot where it dosent work)
-#scene = "OpenWater-HoveringDualSonar" # Sonar donsen't work
-scene = "PierHarbor-HoveringDualSonar" #Works now (Has a spot where it dosen't work)
+scene = "OpenWater-HoveringDualSonar" # Sonar donsen't work
+#scene = "PierHarbor-HoveringDualSonar" #Works now (Has a spot where it dosen't work)
+#scene = "SimpleUnderwater-HoveringDualSonar"
+#scene = "Rooms-DataGen"
 config = holoocean.packagemanager.get_scenario(scene)
 depth_command = 0
 
@@ -146,12 +148,12 @@ with holoocean.make(scene) as env:
             if "PoseSensor" in state:
                 # convert the pose sensor to an IMU message
                 roll,pitch,yaw = Rotation.from_matrix(state["PoseSensor"][:3, :3]).as_euler("xyz")
-                qx,qy,qz,qw = Rotation.from_euler("xyz",[roll+(np.pi/2),pitch,-yaw]).as_quat()
+                qx,qy,qz,qw = Rotation.from_euler("xyz",[roll ,pitch, yaw]).as_quat()
 
                 # conver the post sensor to a depth message
                 #depth_command = depth_control.control_depth(state["PoseSensor"][2][3],-1)
                 x = state["PoseSensor"][0][3]#-520
-                y = state["PoseSensor"][1][3]#+646
+                y = state["PoseSensor"][1][3]#+646 # Y in holoocean screen sign is flipped
                 z = state["PoseSensor"][2][3]#+12
 
                 imu_msg = Imu()
